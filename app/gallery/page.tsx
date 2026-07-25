@@ -21,7 +21,7 @@ const RED = "#c00000";
 const DARK_TEXT = "#1d1c17";
 const CREAM_BG = "#f2ede5";
 const WHITE = "#ffffff";
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 type GalleryProject = {
   id: string;
@@ -31,7 +31,7 @@ type GalleryProject = {
   description: string;
   pitch: string;
   tags: string[];
-  image: string;
+  image: string | null;
   links: {
     github: string | null;
     demo: string | null;
@@ -45,6 +45,41 @@ type GalleryPayload = {
   tracks?: string[];
   error?: string;
 };
+
+/** Judge-style diagonal X when a project has no thumbnail. */
+function ThumbnailMedia({
+  image,
+  title,
+  objectFit = "cover",
+}: {
+  image: string | null;
+  title: string;
+  objectFit?: "cover" | "contain";
+}) {
+  if (image) {
+    return (
+      <img
+        src={image}
+        alt={title}
+        className="w-full h-full"
+        style={{ objectFit, display: "block" }}
+      />
+    );
+  }
+
+  return (
+    <div
+      className="relative w-full h-full"
+      style={{ backgroundColor: CREAM_BG }}
+      aria-hidden="true"
+    >
+      <svg width="100%" height="100%" preserveAspectRatio="none" className="absolute inset-0">
+        <line x1="0" y1="0" x2="100%" y2="100%" stroke="rgba(204,0,0,0.15)" strokeWidth="1" />
+        <line x1="100%" y1="0" x2="0" y2="100%" stroke="rgba(204,0,0,0.15)" strokeWidth="1" />
+      </svg>
+    </div>
+  );
+}
 
 function normalizeTrack(value: unknown) {
   if (typeof value !== "string") return "";
@@ -104,7 +139,7 @@ export default function GalleryPage() {
           tags: Array.isArray(row.tags)
             ? row.tags.filter((tag): tag is string => typeof tag === "string" && tag.trim().length > 0)
             : [],
-          image: typeof row.image === "string" && row.image.trim().length > 0 ? row.image : "/next.svg",
+          image: typeof row.image === "string" && row.image.trim().length > 0 ? row.image : null,
           links: {
             github: row.links?.github ?? null,
             demo: row.links?.demo ?? null,
@@ -268,11 +303,7 @@ export default function GalleryPage() {
                   </div>
 
                   <div className="relative aspect-video overflow-hidden border-b-4 border-[#1d1c17]">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                    />
+                    <ThumbnailMedia image={project.image} title={project.title} />
                     <div className="absolute inset-0 bg-red-600/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
 
@@ -401,8 +432,12 @@ export default function GalleryPage() {
                 </svg>
               </button>
 
-              <div className="w-full md:w-1/2 shrink-0 flex items-center justify-center border-b-4 md:border-b-0 md:border-r-4 border-[#1d1c17] bg-[#1d1c17] aspect-video md:aspect-auto">
-                <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-contain" />
+              <div className="w-full md:w-1/2 shrink-0 flex items-center justify-center border-b-4 md:border-b-0 md:border-r-4 border-[#1d1c17] bg-[#1d1c17] aspect-video md:aspect-auto md:min-h-[280px]">
+                <ThumbnailMedia
+                  image={selectedProject.image}
+                  title={selectedProject.title}
+                  objectFit={selectedProject.image ? "contain" : "cover"}
+                />
               </div>
 
               <div className="w-full md:w-1/2 flex flex-col p-5 sm:p-6 overflow-y-auto">

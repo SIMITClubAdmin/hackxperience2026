@@ -74,7 +74,7 @@ export async function GET() {
         tags: Array.isArray(row.tech_stack)
           ? row.tech_stack.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
           : [],
-        image: row.thumbnail_url || "/next.svg",
+        image: row.thumbnail_url?.trim() ? row.thumbnail_url : null,
         links: {
           github: row.github_repo_url,
           demo: row.live_demo_url ?? null,

@@ -157,9 +157,15 @@
 }
 
 .tableGrid {
-  min-width: 600px;
+  min-width: 920px;
   display: grid;
-  grid-template-columns: minmax(220px, 1.35fr) minmax(180px, 1fr) 140px 56px;
+  grid-template-columns:
+    minmax(180px, 1.2fr)
+    minmax(110px, 0.7fr)
+    minmax(100px, 0.65fr)
+    minmax(140px, 0.9fr)
+    120px
+    56px;
   align-items: stretch;
 }
 
@@ -193,7 +199,13 @@
 
 .mainRow {
   display: grid;
-  grid-template-columns: minmax(220px, 1.35fr) minmax(180px, 1fr) 140px 56px;
+  grid-template-columns:
+    minmax(180px, 1.2fr)
+    minmax(110px, 0.7fr)
+    minmax(100px, 0.65fr)
+    minmax(140px, 0.9fr)
+    120px
+    56px;
   cursor: pointer;
   outline: none;
   transition: background 0.1s;
@@ -240,6 +252,95 @@
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.01em;
+}
+
+.teamIdCell {
+  font-family: var(--font-admin-mono), "IBM Plex Mono", monospace;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.trackPill {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 0;
+  font-family: var(--font-admin-mono), "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1.5px solid;
+}
+
+.trackPillCare {
+  background: rgba(204, 0, 0, 0.08);
+  color: #cc0000;
+  border-color: #cc0000;
+}
+
+.trackPillFriction {
+  background: rgba(0, 120, 212, 0.12);
+  color: #0078d4;
+  border-color: #0078d4;
+}
+
+.trackPillOther {
+  background: #f2ede5;
+  color: #7a7669;
+  border-color: #1d1c17;
+}
+
+/* ── Track filter ────────────────────────────────────────── */
+
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.filterChip {
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1.5px solid #1d1c17;
+  background: #fef9f1;
+  color: #1d1c17;
+  font-family: var(--font-admin-mono), "IBM Plex Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 0 #1d1c17;
+  transition: background 0.12s, color 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+
+.filterChip:hover {
+  border-color: #cc0000;
+  color: #cc0000;
+}
+
+.filterChipActive {
+  background: #cc0000;
+  border-color: #cc0000;
+  color: #fef9f1;
+  box-shadow: none;
+}
+
+.filterChipActive:hover {
+  color: #fef9f1;
+}
+
+.filterCount {
+  margin-left: auto;
+  color: #7a7669;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .toggleCell {
@@ -435,6 +536,16 @@
 
   .averageCell {
     font-size: 16px;
+  }
+
+  .filterBar {
+    margin-bottom: 14px;
+  }
+
+  .filterCount {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
   }
 
   .projectName {
